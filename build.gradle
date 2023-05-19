@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'io.freefair.lombok' version '8.0.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+    group = 'com.xebia.portsadapters'
+    version = '0.0.1-SNAPSHOT'
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'io.freefair.lombok'
+
+    repositories {
+        mavenCentral()
+    }
+
+    // needed to get multiproject builds with Spring Boot working
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:3.0.6")
+        }
+    }
+}
