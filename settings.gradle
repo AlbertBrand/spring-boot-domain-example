@@ -1,4 +1,5 @@
-rootProject.name = 'ports-adapters'
+rootProject.name = 'domain-example'
 include 'domain'
 include 'app'
-include 'infra'
+include 'adapter:jpa'
+include 'adapter:web'
