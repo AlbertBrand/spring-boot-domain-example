@@ -1,7 +1,7 @@
 package domainexample;
 
 import domainexample.adapter.jpa.BookJpaAdapter;
-import domainexample.domain.BookServiceImpl;
+import domainexample.domain.BookRepository;
 import domainexample.domain.port.BookPersistencePort;
 import domainexample.domain.port.BookServicePort;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfiguration {
     @Bean
     public BookServicePort bookService(BookPersistencePort repository) {
-        return new BookServiceImpl(repository);
+        return new BookRepository(repository);
     }
 
     @Bean BookPersistencePort bookPersistence() {

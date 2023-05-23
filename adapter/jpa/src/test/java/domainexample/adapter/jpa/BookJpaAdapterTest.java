@@ -2,6 +2,7 @@ package domainexample.adapter.jpa;
 
 import domainexample.domain.Author;
 import domainexample.domain.Book;
+import domainexample.domain.ISBN;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -17,12 +18,12 @@ public class BookJpaAdapterTest {
     @Autowired
     BookJpaAdapter adapter;
 
-    private final String book1isbn = "978-1457501197";
+    private final ISBN book1isbn = ISBN.of("978-1457501197");
     private final Author ericEvansAuthor = Author.of("Eric Evans");
     private final Book book1 = Book.of(book1isbn, "Domain-Driven Design Reference: Definitions and Pattern Summaries", ericEvansAuthor);
 
     @Test
-    public void test_getBookByIsbn() {
+    public void getBookByIsbn() {
         adapter.storeBook(book1);
 
         var book = adapter.getBookByIsbn(book1isbn).orElseThrow();
@@ -31,10 +32,10 @@ public class BookJpaAdapterTest {
     }
 
     @Test
-    public void test_getBooks() {
-        adapter.storeBook(Book.of("978-0321125217", "Domain-Driven Design: Tackling Complexity in the Heart of Software", ericEvansAuthor));
-        Author vaughnVernonAuthor = Author.of("Vaughn Vernon");
-        adapter.storeBook(Book.of("978-0321834577", "Implementing Domain Driven Design", vaughnVernonAuthor));
+    public void getBooks() {
+        adapter.storeBook(Book.of(ISBN.of("978-0321125217"), "Domain-Driven Design: Tackling Complexity in the Heart of Software", ericEvansAuthor));
+        var vaughnVernonAuthor = Author.of("Vaughn Vernon");
+        adapter.storeBook(Book.of(ISBN.of("978-0321834577"), "Implementing Domain Driven Design", vaughnVernonAuthor));
 
         var books = adapter.getBooks();
 
@@ -44,9 +45,9 @@ public class BookJpaAdapterTest {
     }
 
     @Test
-    public void test_storeBook() {
-        String book2isbn = "978-0321125217";
-        String book2title = "Domain-Driven Design: Tackling Complexity in the Heart of Software";
+    public void storeBook() {
+        var book2isbn = ISBN.of("978-0321125217");
+        var book2title = "Domain-Driven Design: Tackling Complexity in the Heart of Software";
         adapter.storeBook(Book.of(book2isbn, book2title, ericEvansAuthor));
 
         var book = adapter.getBookByIsbn(book2isbn).orElseThrow();
@@ -57,7 +58,7 @@ public class BookJpaAdapterTest {
     }
 
     @Test
-    public void test_removeBook() {
+    public void removeBook() {
         adapter.storeBook(Book.of(book1isbn, "Domain-Driven Design Reference: Definitions and Pattern Summaries", Author.of("Eric Evans")));
         var book = adapter.getBookByIsbn(book1isbn);
         assertThat(book.isPresent()).isTrue();

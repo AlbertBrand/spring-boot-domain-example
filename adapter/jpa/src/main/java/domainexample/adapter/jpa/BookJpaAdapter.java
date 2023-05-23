@@ -3,6 +3,7 @@ package domainexample.adapter.jpa;
 import domainexample.adapter.jpa.entity.BookEntity;
 import domainexample.adapter.jpa.repository.BookRepository;
 import domainexample.domain.Book;
+import domainexample.domain.ISBN;
 import domainexample.domain.port.BookPersistencePort;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,8 +20,8 @@ public class BookJpaAdapter implements BookPersistencePort {
     }
 
     @Override
-    public Optional<Book> getBookByIsbn(String isbn) {
-        return repository.findById(isbn).map(BookEntity::toDomain);
+    public Optional<Book> getBookByIsbn(ISBN isbn) {
+        return repository.findById(isbn.getValue()).map(BookEntity::toDomain);
     }
 
     @Override

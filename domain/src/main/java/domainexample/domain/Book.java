@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor(staticName = "of")
 public class Book {
-    private String isbn;
+    private ISBN isbn;
     private String title;
     private Author author;
 }

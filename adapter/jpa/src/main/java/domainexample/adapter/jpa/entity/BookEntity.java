@@ -1,6 +1,7 @@
 package domainexample.adapter.jpa.entity;
 
 import domainexample.domain.Book;
+import domainexample.domain.ISBN;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -24,13 +25,13 @@ public class BookEntity {
 
     public static BookEntity fromDomain(Book book) {
         return BookEntity.builder()
-                .isbn(book.getIsbn())
+                .isbn(book.getIsbn().getValue())
                 .title(book.getTitle())
                 .author(AuthorEntity.fromDomain(book.getAuthor()))
                 .build();
     }
 
     public Book toDomain() {
-        return Book.of(isbn, title, author.toDomain());
+        return Book.of(ISBN.of(isbn), title, author.toDomain());
     }
 }
