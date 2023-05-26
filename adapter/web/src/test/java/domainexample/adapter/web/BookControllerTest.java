@@ -1,6 +1,8 @@
 package domainexample.adapter.web;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
+
+import domainexample.adapter.web.config.SecurityConfig;
 import domainexample.adapter.web.dto.BookDto;
 import domainexample.domain.Author;
 import domainexample.domain.Book;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,11 +24,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @EnableAutoConfiguration
 @ContextConfiguration(classes = BookController.class)
 @WebMvcTest(BookController.class)
+@Import(SecurityConfig.class)
 public class BookControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -87,6 +92,7 @@ public class BookControllerTest {
 
         mvc.perform(MockMvcRequestBuilders
                         .post("/book/123-1234567895")
+                        .with(csrf())
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(BookDto.fromDomain(book)))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -100,6 +106,7 @@ public class BookControllerTest {
 
         mvc.perform(MockMvcRequestBuilders
                         .post("/book/234-1234567895")
+                        .with(csrf())
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(BookDto.fromDomain(book)))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -113,6 +120,7 @@ public class BookControllerTest {
 
         mvc.perform(MockMvcRequestBuilders
                         .delete("/book/123-1234567895")
+                        .with(csrf())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

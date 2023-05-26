@@ -23,7 +23,7 @@ subprojects {
     // needed to get multiproject builds with Spring Boot working
     dependencyManagement {
         imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:3.0.6")
+            mavenBom("org.springframework.boot:spring-boot-dependencies:3.1.0")
         }
     }
 }
