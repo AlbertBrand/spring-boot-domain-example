@@ -38,7 +38,7 @@ public class BookControllerTest {
     @Test
     public void getAllBooks() throws Exception {
         given(servicePort.getBooks()).willReturn(List.of(
-                Book.of(ISBN.of("123-1234567890"), "title", Author.of("author")),
+                Book.of(ISBN.of("123-1234567895"), "title", Author.of("author")),
                 Book.of(ISBN.of("234-1234567890"), "title2", Author.of("author2"))
         ));
 
@@ -47,21 +47,21 @@ public class BookControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
 //                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value("123-1234567890"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value("123-1234567895"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].isbn").value("234-1234567890"));
     }
 
     @Test
     public void getBookByIsbn() throws Exception {
-        given(servicePort.getBookByIsbn(ISBN.of("123-1234567890"))).willReturn(Optional.of(
-                Book.of(ISBN.of("123-1234567890"), "title", Author.of("author"))
+        given(servicePort.getBookByIsbn(ISBN.of("123-1234567895"))).willReturn(Optional.of(
+                Book.of(ISBN.of("123-1234567895"), "title", Author.of("author"))
         ));
 
         mvc.perform(MockMvcRequestBuilders
-                        .get("/book/123-1234567890")
+                        .get("/book/123-1234567895")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value("123-1234567890"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value("123-1234567895"));
     }
 
     @Test
@@ -75,31 +75,31 @@ public class BookControllerTest {
     @Test
     public void getBookByIsbn_noResult() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                        .get("/book/123-1234567890")
+                        .get("/book/123-1234567895")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void storeBook_correctIsbn() throws Exception {
-        var book = Book.of(ISBN.of("123-1234567890"), "title", Author.of("author"));
+        var book = Book.of(ISBN.of("123-1234567895"), "title", Author.of("author"));
         given(servicePort.storeBook(book)).willReturn(book);
 
         mvc.perform(MockMvcRequestBuilders
-                        .post("/book/123-1234567890")
+                        .post("/book/123-1234567895")
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(BookDto.fromDomain(book)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value("123-1234567890"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value("123-1234567895"));
     }
 
     @Test
     public void storeBook_incorrectIsbn() throws Exception {
-        var book = Book.of(ISBN.of("123-1234567890"), "title", Author.of("author"));
+        var book = Book.of(ISBN.of("123-1234567895"), "title", Author.of("author"));
 
         mvc.perform(MockMvcRequestBuilders
-                        .post("/book/234-1234567890")
+                        .post("/book/234-1234567895")
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(BookDto.fromDomain(book)))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -108,11 +108,11 @@ public class BookControllerTest {
 
     @Test
     public void deleteBookByID() throws Exception {
-        var book = Book.of(ISBN.of("123-1234567890"), "title", Author.of("author"));
-        given(servicePort.getBookByIsbn(ISBN.of("123-1234567890"))).willReturn(Optional.of(book));
+        var book = Book.of(ISBN.of("123-1234567895"), "title", Author.of("author"));
+        given(servicePort.getBookByIsbn(ISBN.of("123-1234567895"))).willReturn(Optional.of(book));
 
         mvc.perform(MockMvcRequestBuilders
-                        .delete("/book/123-1234567890")
+                        .delete("/book/123-1234567895")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
