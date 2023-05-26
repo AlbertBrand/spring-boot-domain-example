@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = BookController.class)
 @WebMvcTest(BookController.class)
 public class BookControllerTest {
-
     @Autowired
     private MockMvc mvc;
 
@@ -38,7 +37,7 @@ public class BookControllerTest {
 
     @Test
     public void getAllBooks() throws Exception {
-        given(this.servicePort.getBooks()).willReturn(List.of(
+        given(servicePort.getBooks()).willReturn(List.of(
                 Book.of(ISBN.of("123-1234567890"), "title", Author.of("author")),
                 Book.of(ISBN.of("234-1234567890"), "title2", Author.of("author2"))
         ));
@@ -54,7 +53,7 @@ public class BookControllerTest {
 
     @Test
     public void getBookByIsbn() throws Exception {
-        given(this.servicePort.getBookByIsbn(ISBN.of("123-1234567890"))).willReturn(Optional.of(
+        given(servicePort.getBookByIsbn(ISBN.of("123-1234567890"))).willReturn(Optional.of(
                 Book.of(ISBN.of("123-1234567890"), "title", Author.of("author"))
         ));
 
@@ -84,7 +83,7 @@ public class BookControllerTest {
     @Test
     public void storeBook_correctIsbn() throws Exception {
         var book = Book.of(ISBN.of("123-1234567890"), "title", Author.of("author"));
-        given(this.servicePort.storeBook(book)).willReturn(book);
+        given(servicePort.storeBook(book)).willReturn(book);
 
         mvc.perform(MockMvcRequestBuilders
                         .post("/book/123-1234567890")
@@ -110,7 +109,7 @@ public class BookControllerTest {
     @Test
     public void deleteBookByID() throws Exception {
         var book = Book.of(ISBN.of("123-1234567890"), "title", Author.of("author"));
-        given(this.servicePort.getBookByIsbn(ISBN.of("123-1234567890"))).willReturn(Optional.of(book));
+        given(servicePort.getBookByIsbn(ISBN.of("123-1234567890"))).willReturn(Optional.of(book));
 
         mvc.perform(MockMvcRequestBuilders
                         .delete("/book/123-1234567890")
