@@ -14,7 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthorEntity {
     @Id
-    public String name;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
 
     public static AuthorEntity fromDomain(Author author) {
         return AuthorEntity.builder().name(author.getName()).build();
