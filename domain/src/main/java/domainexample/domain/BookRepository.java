@@ -10,29 +10,30 @@ import java.util.Optional;
  * Repository
  */
 public class BookRepository implements BookServicePort {
-    private final BookPersistencePort persistence;
+  private final BookPersistencePort persistence;
 
-    public BookRepository(BookPersistencePort persistence) {
-        this.persistence = persistence;
-    }
+  public BookRepository(BookPersistencePort persistence) {
+    this.persistence = persistence;
+  }
 
-    @Override
-    public List<Book> getBooks() {
-        return persistence.getBooks();
-    }
+  @Override
+  public List<Book> getBooks() {
+    return persistence.getBooks();
+  }
 
-    @Override
-    public Optional<Book> getBookByIsbn(ISBN isbn) {
-        return persistence.getBookByIsbn(isbn);
-    }
+  @Override
+  public Optional<Book> getBookByIsbn(String isbn) throws ValidationException {
+    return persistence.getBookByIsbn(ISBN.of(isbn));
+  }
 
-    @Override
-    public Book storeBook(Book book) {
-        return persistence.storeBook(book);
-    }
+  @Override
+  public Book storeBook(String isbn, String title, String authorLastName) throws ValidationException {
+    Book book = BookFactory.createBook(isbn, title, authorLastName);
+    return persistence.storeBook(book);
+  }
 
-    @Override
-    public void removeBook(Book book) {
-        persistence.removeBook(book);
-    }
+  @Override
+  public void removeBook(String isbn) throws ValidationException {
+    persistence.removeBook(ISBN.of(isbn));
+  }
 }

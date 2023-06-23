@@ -13,5 +13,5 @@ public interface BookPersistencePort {
 
     Book storeBook(Book book);
 
-    void removeBook(Book book);
+    void removeBook(ISBN isbn);
 }

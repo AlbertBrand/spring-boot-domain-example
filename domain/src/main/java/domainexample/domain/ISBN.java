@@ -11,16 +11,16 @@ public class ISBN {
 
     private static final String ISBN_REGEX = "\\d{3}-\\d{10}";
 
-    private ISBN(String value) {
+    private ISBN(String value) throws ValidationException {
         if (value == null)
-            throw new NullPointerException("ISBN value cannot be null");
+            throw new ValidationException("ISBN value cannot be null");
 
         if (!value.matches(ISBN_REGEX)) {
-            throw new IllegalArgumentException("Invalid ISBN format");
+            throw new ValidationException("Invalid ISBN format");
         }
 
         if (!hasValidChecksum(value)) {
-            throw new IllegalArgumentException("Invalid ISBN checksum digit");
+            throw new ValidationException("Invalid ISBN checksum digit");
         }
 
         this.value = value;
@@ -39,7 +39,15 @@ public class ISBN {
         return checkDigit == Character.getNumericValue(isbn.charAt(12));
     }
 
-    public static ISBN of(String value) {
+    public static ISBN of(String value) throws ValidationException {
         return new ISBN(value);
+    }
+
+    public static ISBN tryParse(String string) {
+      try {
+        return ISBN.of(string);
+      } catch (ValidationException e) {
+        throw new RuntimeException("Unexpected validation error: " + e.getMessage());
+      }
     }
 }

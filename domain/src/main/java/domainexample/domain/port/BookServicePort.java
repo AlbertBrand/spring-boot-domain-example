@@ -1,7 +1,7 @@
 package domainexample.domain.port;
 
 import domainexample.domain.Book;
-import domainexample.domain.ISBN;
+import domainexample.domain.ValidationException;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,9 +9,9 @@ import java.util.Optional;
 public interface BookServicePort {
     List<Book> getBooks();
 
-    Optional<Book> getBookByIsbn(ISBN isbn);
+    Optional<Book> getBookByIsbn(String isbn) throws ValidationException;
 
-    Book storeBook(Book book);
+    Book storeBook(String isbn, String title, String authorLastName) throws ValidationException;
 
-    void removeBook(Book book);
+    void removeBook(String isbn) throws ValidationException;
 }

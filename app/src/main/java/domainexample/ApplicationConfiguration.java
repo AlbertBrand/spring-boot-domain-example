@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationConfiguration {
     @Bean
-    public BookServicePort bookService(BookPersistencePort repository) {
+    BookServicePort bookService(BookPersistencePort repository) {
         return new BookRepository(repository);
     }
 

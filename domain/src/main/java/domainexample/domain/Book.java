@@ -11,7 +11,11 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(of = "isbn")
 public class Book {
-    private ISBN isbn;
-    private String title;
-    private Author author;
+  private ISBN isbn;
+  private String title;
+  private Author author;
+
+  void changeAuthor(String lastName) {
+    author = Author.of(lastName);
+  }
 }

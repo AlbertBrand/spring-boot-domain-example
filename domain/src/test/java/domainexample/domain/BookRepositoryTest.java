@@ -1,14 +1,15 @@
 package domainexample.domain;
 
-import domainexample.domain.port.BookPersistencePort;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import domainexample.domain.port.BookPersistencePort;
 
 @ExtendWith(MockitoExtension.class)
 public class BookRepositoryTest {
@@ -26,29 +27,29 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void getBookByIsbn() {
+    public void getBookByIsbn() throws ValidationException {
         var isbn = ISBN.of("978-3866801929");
 
-        repository.getBookByIsbn(isbn);
+        repository.getBookByIsbn(isbn.getValue());
 
         verify(persistence, times(1)).getBookByIsbn(isbn);
     }
 
     @Test
-    public void storeBook() {
+    public void storeBook() throws ValidationException {
         var book = Book.of(ISBN.of("978-3866801929"), "title", Author.of("author"));
 
-        repository.storeBook(book);
+        repository.storeBook(book.getIsbn().getValue(), book.getTitle(), book.getAuthor().getName());
 
         verify(persistence, times(1)).storeBook(book);
     }
 
     @Test
-    public void removeBook() {
-        var book = Book.of(ISBN.of("978-3866801929"), "title", Author.of("author"));
+    public void removeBook() throws ValidationException {
+        var isbn = ISBN.of("978-3866801929");
 
-        repository.removeBook(book);
+        repository.removeBook(isbn.getValue());
 
-        verify(persistence, times(1)).removeBook(book);
+        verify(persistence, times(1)).removeBook(isbn);
     }
 }
